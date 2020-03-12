@@ -5,10 +5,11 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 
+import os
 from app import app, db
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm
+from app.forms import ProfileForm
 from app.models import UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -32,14 +33,37 @@ def about():
 def secure_page():
     return render_template('secure_page.html')
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET','POST'])
 def add_profile():
-    return redirect(url_for('home'))
+    """Either (GET) provide profile form or (POST) create the profile"""
+    form = ProfileForm()
+    if form.validate_on_submit():
+        # Get values from form
+        fname = request.form['fname']
+        lname = request.form['lname']
+        gender = request.form['gender']
+        email = request.form['email']
+        location = request.form['location']
+        bio = request.form['bio']
+        prof_pic = request.form['photo']
+        pp_filename = secure_filename(prof_pic.filename)
+        try:
+            """Idea for now: need to save the picture, and save the filename. Store items to database"""
+            flash('User successfully created', 'success')
+            return redirect(url_for('view_profiles'))
+        except:
+            flash("User could not be created", 'danger')
+    return render_template('add_profile.html', form = form)
 
 @app.route('/profiles')
 def view_profiles():
-    return redirect(url_for('home'))
+    """Retrieve all profiles from the database, then display them"""
+    return render_template("view_profiles.html")
 
+@app.route('/profile/<userid>')
+def view_profile(userid):
+    """Query database for complete user info for id, then pass to a template to render the info"""
+    return "in progress fam"
 
 ###
 # The functions below should be applicable to all Flask apps.
