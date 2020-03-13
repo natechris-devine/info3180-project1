@@ -71,12 +71,19 @@ def save_photo(photo):
 @app.route('/profiles')
 def view_profiles():
     """Retrieve all profiles from the database, then display them"""
-    return render_template("view_profiles.html")
+    profiles = db.session.query(UserProfile).all()
+    update_filepaths(profiles)
+    return render_template("view_profiles.html", profiles = profiles)
+
+def update_filepaths(profiles):
+    for profile in profiles:
+        profile.profile_picture = 'uploads/' + profile.profile_picture
+    
 
 @app.route('/profile/<userid>')
 def view_profile(userid):
     """Query database for complete user info for id, then pass to a template to render the info"""
-    return "in progress fam"
+    return render_template("profile_details.html")
 
 ###
 # The functions below should be applicable to all Flask apps.
