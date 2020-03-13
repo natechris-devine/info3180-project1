@@ -13,5 +13,5 @@ class ProfileForm(FlaskForm):
     email = EmailField('email', validators=[Email(), InputRequired(), Length(max=40)])
     location = StringField('location', validators=[InputRequired(), Length(max=40)])
     bio = TextAreaField('bio', validators=[DataRequired(), Length(max=150)])
-    profile_picture = FileField('photo', validators=[FileRequired(), FileAllowed(['jpg','png'], 'Images only!'), Length(max=100)])
+    profile_picture = FileField('photo', validators=[FileRequired(), FileAllowed(['jpg','png'], 'Images only!')])
     

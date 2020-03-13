@@ -7,11 +7,12 @@ This file creates your application.
 
 import os
 from app import app, db
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import ProfileForm
 from app.models import UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 
 ###
@@ -39,21 +40,33 @@ def add_profile():
     form = ProfileForm()
     if form.validate_on_submit():
         # Get values from form
-        fname = request.form['fname']
-        lname = request.form['lname']
+        fname = request.form['first_name']
+        lname = request.form['last_name']
         gender = request.form['gender']
         email = request.form['email']
         location = request.form['location']
         bio = request.form['bio']
-        prof_pic = request.form['photo']
-        pp_filename = secure_filename(prof_pic.filename)
+        
         try:
             """Idea for now: need to save the picture, and save the filename. Store items to database"""
+            p_filename = save_photo(request.files['profile_picture']) # profile photo filename
+            profile = UserProfile(fname, lname, gender, email, location, bio, p_filename)
+            db.session.add(profile)
+            db.session.commit()
             flash('User successfully created', 'success')
             return redirect(url_for('view_profiles'))
         except:
             flash("User could not be created", 'danger')
     return render_template('add_profile.html', form = form)
+
+def save_photo(photo):
+    """Saves a photo and returns the filename"""
+    p_name = secure_filename(photo.filename)
+    try:
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], p_name))
+    except Exception as e:
+        flash("Permission Error, {}".format(e), 'danger')
+    return p_name
 
 @app.route('/profiles')
 def view_profiles():

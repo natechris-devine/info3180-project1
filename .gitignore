@@ -14,3 +14,6 @@ venv/
 
 # VSCode
 .vscode
+
+# Ignore the image files
+uploads/
