@@ -76,6 +76,8 @@ def view_profiles():
     return render_template("view_profiles.html", profiles = profiles)
 
 def update_filepaths(profiles):
+    if type(profiles) != list:
+        profiles = [profiles]
     for profile in profiles:
         profile.profile_picture = 'uploads/' + profile.profile_picture
     
@@ -83,7 +85,12 @@ def update_filepaths(profiles):
 @app.route('/profile/<userid>')
 def view_profile(userid):
     """Query database for complete user info for id, then pass to a template to render the info"""
-    return render_template("profile_details.html")
+    profile = db.session.query(UserProfile).get(userid)
+    if profile:
+        update_filepaths(profile)
+        return render_template("profile_details.html", profile = profile)
+    else:
+        return redirect(url_for("view_profiles"))
 
 ###
 # The functions below should be applicable to all Flask apps.
