@@ -1,3 +1,34 @@
 body {
     padding-top: 5rem;
+    background-color: rgb(235, 243, 250);
+}
+
+.profile {
+    border-top: 0.5rem solid rgb(74, 144, 226);
+    /* height: 20rem; */
+}
+
+.bg-primary{
+    background-color: rgb(74, 144, 226) !important;
+}
+
+.pg-header {
+    margin-bottom: 2.5rem;
+    margin-top: 1.5rem;
+}
+
+.view-p-btn {
+    background-color: #11d03d;
+    border-color: #11d03d;
+}
+
+.small-pic{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Bootstrap modifications */
+.row {
+    background-color: white;
+    border-radius: 0.5rem;
 }

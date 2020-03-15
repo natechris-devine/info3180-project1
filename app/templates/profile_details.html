@@ -3,7 +3,7 @@
 {% block main %}
 <h1 class="page-header">Profile Details</h1>
 <div>
-    <img class = "profile med-pic" src="{{ url_for('static', filename = profile.profile_picture)}}">
+    <img class = "med-pic" src="{{ url_for('static', filename = profile.profile_picture)}}">
     <div>
         <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
         <p>{{ profile.email }}</p>
