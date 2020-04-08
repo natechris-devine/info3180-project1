@@ -2,8 +2,10 @@
 
 {% block main %}
 <h1 class="page-header">Profile Details</h1>
-<div>
-    <img class = "med-pic" src="{{ url_for('static', filename = profile.profile_picture)}}">
+<div class="card-form detailed-profile row align-items-center my-4 px-5 py-3 shadow-r mx-auto">
+    <div class="col-sm-4">
+        <img class = "img-fluid" src="{{ url_for('static', filename = profile.profile_picture)}}">
+    </div>
     <div>
         <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
         <p>{{ profile.email }}</p>
