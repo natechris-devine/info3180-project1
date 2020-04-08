@@ -6,6 +6,7 @@ This file creates your application.
 """
 
 import os
+import datetime
 from app import app, db
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, logout_user, current_user, login_required
@@ -76,11 +77,19 @@ def view_profiles():
     return render_template("view_profiles.html", profiles = profiles)
 
 def update_filepaths(profiles):
+    """Add complete filepath to filenames from database"""
     if type(profiles) != list:
         profiles = [profiles]
     for profile in profiles:
         profile.profile_picture = 'uploads/' + profile.profile_picture
     
+def format_date(profiles):
+    """Format date string to format {month} {day}, {year}"""
+    if type(profiles) != list:
+        profiles = [profiles]
+    for profile in profiles:
+        dte = profile.date_created
+        profile.date_created = dte.strftime("%B %d, %Y")
 
 @app.route('/profile/<userid>')
 def view_profile(userid):
@@ -88,6 +97,7 @@ def view_profile(userid):
     profile = db.session.query(UserProfile).get(userid)
     if profile:
         update_filepaths(profile)
+        format_date(profile)
         return render_template("profile_details.html", profile = profile)
     else:
         return redirect(url_for("view_profiles"))
