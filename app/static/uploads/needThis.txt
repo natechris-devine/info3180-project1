@@ -1,1 +1,2 @@
 Ensuring Heroku uploads this folder
+Trying to reset the database
