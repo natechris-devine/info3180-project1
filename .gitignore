@@ -16,4 +16,5 @@ venv/
 .vscode
 
 # Ignore the image files
-uploads/
+*.jpg
+*.png
